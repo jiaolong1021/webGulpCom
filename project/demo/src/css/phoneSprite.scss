@@ -1,0 +1,23 @@
+.ico {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+$totalWidth: 55px/2;
+$totalHeight: 32px/2;
+.ico-back{
+    width: 11px;
+    height: 16px;
+    background-position: 0px 0px;
+    background-size: $totalWidth $totalHeight;
+    background-image: url(images/phoneSprite.png);
+}
+$totalWidth: 55px/2;
+$totalHeight: 32px/2;
+.ico-see{
+    width: 14px;
+    height: 10px;
+    background-position: -14px 0px;
+    background-size: $totalWidth $totalHeight;
+    background-image: url(images/phoneSprite.png);
+}

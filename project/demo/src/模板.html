@@ -1,0 +1,278 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>模块</title>
+    <meta charset="utf-8" />
+    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link href="js/bootstrap/bootstrap.css" rel="stylesheet" />
+    <link href="css/main.css" rel="stylesheet" />
+
+    <!-- HTML5 shiv and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv.js"></script>
+    <script src="js/respond.min.js"></script>
+    <![endif]-->
+    <style type="text/css">
+        .btn-lst {margin: 20px;}
+        .btn-lst [class*='btn'] {margin: 0 20px 15px 0;}
+        .module-btn .icon-btn, i.icon, img {vertical-align: middle;}
+        .module-btn .icon-btn:first-child {margin-bottom: 10px;}
+        .module-btn .icon-btn + .icon-btn,
+        .module-btn .icon-btn + i.icon,
+        .module-btn .icon-btn + img,
+        .module-btn i.icon + i.icon,
+        .module-btn i.icon + .icon-btn,
+        .module-btn i.icon + img,
+        .module-btn img + img,
+        .module-btn img + i.icon,
+        .module-btn img + .icon-btn {margin-left: 15px; margin-bottom: 10px;}
+    </style>
+</head>
+<body>
+    <!-- include "module/_common/头部.html" -->
+
+    <!-- 主体 -->
+    <div class="container g-body f-mt20" data-as="bottombox" data-param="50">
+        <!-- 面包屑 -->
+        <ul class="m-crm">
+            <li><a href="#">试卷管理</a></li>
+            <li><a href="#">一年级语文期未考试试卷</a></li>
+            <li class="active">选择试题</li>
+        </ul>
+        <!-- /面包屑 -->
+
+        <!-- 主内容 -->
+        <div class="g-box">
+            <!-- tab导航 -->
+            <ul class="nav nav-tabs m-tab-top">
+                <li class="active"><a href="#tab1" data-toggle="tab">公用样式</a></li>
+                <li><a href="#tab2" data-toggle="tab">布局</a></li>
+                <li><a href="#tab3" data-toggle="tab">弹窗</a></li>
+            </ul>
+            <!-- /tab导航 -->
+
+            <!-- tab内容 -->
+            <div class="tab-content">
+                <div class="tab-pane fade active in" id="tab1">
+                    <div class="m-title">
+                        <i class="title-ico"></i>
+                        <span class="title-text">图标</span>
+                        <a class="title-right">更多</a>
+                    </div>
+
+                    <div class="module-btn" style="background:#efefef; padding:20px; margin-bottom:30px;">
+
+                    </div>
+
+                    <div class="m-title">
+                        <i class="title-ico"></i>
+                        <span class="title-text">按钮</span>
+                        <a class="title-right">更多</a>
+                    </div>
+
+                    <div style="padding:20px; margin-bottom:30px;">
+
+                    </div>
+
+                    <!-- 分页 -->
+                    <div class="pagination" id="pagination">
+                        <strong class="disabled"><span class="fenyi_al page-pre">&lt; 上一页</span></strong>
+                        <strong>1</strong>
+                        <a href="javascript:void(0)">2</a>
+                        <a href="javascript:void(0)">3</a>
+                        <a href="javascript:void(0)">4</a>
+                        <a href="javascript:void(0)">5</a>
+                        <a href="javascript:void(0)">6</a>
+                        <a href="javascript:void(0)">7</a>
+                        <a href="javascript:void(0)">8</a>
+                        <a href="javascript:void(0)" class="disabled"><span class="fenyi_al page-next">下一页 &gt;</span></a>
+                        <span style="line-height:30px; color: #666;">共100条</span>
+                    </div>
+                    <!-- 分页 -->
+
+                </div>
+
+                <div class="tab-pane fade" id="tab2" style="background:#e4edf4; margin:30px -21px 30px; padding-top:20px;">
+                    <h4>内容容器:</h4>
+                    <br />
+                    <div class="g-box">
+                        <div class="m-title">
+                            <i class="title-ico"></i>
+                            <span class="title-text">左右padding:20px;</span>
+                            <a class="title-right">更多</a>
+                        </div>
+                        内容...
+                    </div>
+                    <br />
+                    <div style="position:relative;">
+                        <h4>左右布局容器:(带右侧边栏)</h4>
+                        <br />
+                        <!-- 左右布局容器:(带右侧边栏) -->
+                        <div class="g-lrbox">
+                            <!-- 主内容 -->
+                            <div class="g-box">
+                                <div style="min-height:350px;">
+                                    内容...
+                                </div>
+                            </div>
+                            <!-- /主内容 -->
+
+                            <!-- 右侧边内容 -->
+                            <div class="lrbox-right">
+                                <div class="g-box">
+                                    右边内容1...
+                                </div>
+
+                                <div class="g-box">
+                                    右边内容2...
+                                </div>
+                            </div>
+                            <!-- /右侧边内容 -->
+                        </div>
+                        <!-- /左右布局容器:(带右侧边栏) -->
+                    </div>
+                    <br />
+                    <br />
+                    <div style="position:relative;">
+                        <h4>左右布局容器:(带左侧边栏)</h4>
+                        <br />
+                        <!-- 左右布局容器:(带左侧边栏) -->
+                        <div class="g-lrbox isleftside">
+                            <!-- 左侧边内容 -->
+                            <div class="lrbox-left">
+                                <div class="g-box">
+                                    左边内容
+                                </div>
+                            </div>
+                            <!-- /左侧边内容 -->
+
+                            <!-- 主内容 -->
+                            <div class="g-box">
+                                <div style="min-height:350px;">
+                                    内容...
+                                </div>
+                            </div>
+                            <!-- /主内容 -->
+                        </div>
+                        <!-- /左右布局容器:(带左侧边栏) -->
+                    </div>
+                    <br />
+                    <br />
+                    <div style="position:relative;">
+                        <h4>左中右布局容器:</h4>
+                        <br />
+                        <!-- 左中右布局容器 -->
+                        <div class="g-lmrbox">
+                            <!-- 左侧边内容 -->
+                            <div class="lmrbox-left">
+                                <div class="g-box">
+                                    左边内容
+                                </div>
+                            </div>
+                            <!-- /左侧边内容 -->
+
+                            <!-- 主内容 -->
+                            <div class="g-box">
+                                <div style="min-height:350px;">
+                                    内容...
+                                </div>
+                            </div>
+                            <!-- /主内容 -->
+
+                            <!-- 右侧边内容 -->
+                            <div class="lmrbox-right">
+                                <div class="g-box">
+                                    右边内容
+                                </div>
+                            </div>
+                            <!-- /右侧边内容 -->
+                        </div>
+                        <!-- /左中右布局容器 -->
+                    </div>
+
+                    <div style="position: relative;">
+                        <h4>左右宽度自适应布局:</h4>
+                        <br />
+                        <div class="mg-box">
+                            <div class="mg-left g-box">left</div>
+                            <div class="mg-right mg-fix-420">
+                                <div class="g-box">
+                                    right
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <br />
+                </div>
+
+                <!-- 弹窗 -->
+                <div class="tab-pane fade" id="tab3">
+                    <a class="btn btn-blue" data-toggle="modal" data-target="#confirm">确认弹窗</a>
+                    <a class="btn btn-blue" data-toggle="float" data-target="#floatDemo">全屏浮窗</a>
+                </div>
+                <!-- /弹窗 -->
+            </div>
+            <!-- /tab内容 -->
+        </div>
+        <!-- /主内容 -->
+
+    </div>
+    <!-- 主体 -->
+
+    <!-- 弹窗内容放置位置 -->
+    <!--确认弹窗-->
+    <div class="modal pop-confirm pop-small" data-backdrop="static" id="confirm">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title">系统提示</h4>
+                </div>
+                <div class="modal-body">
+                    你确定要删除此备课记录内容？
+                </div>
+                <div class="modal-footer">
+                    <a class="btn btn-blue" data-dismiss="modal">确定</a>
+                    <a class="btn btn-white" data-dismiss="modal">取消</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--/确认弹窗-->
+
+    <!-- 全屏弹窗 -->
+    <div class="m-float" id="floatDemo">
+        <div class="float-content">
+            <div class="float-header">
+                <h3>浮窗标题</h3>
+                <div class="float-close" data-dismiss="float"></div>
+            </div>
+            <div class="float-body">
+                浮窗内容
+            </div>
+            <div class="float-footer">
+                浮窗页脚
+            </div>
+        </div>
+    </div>
+    <!-- /全屏弹窗 -->
+
+
+    <!-- /弹窗内容放置位置 -->
+
+    <!-- 页脚 -->
+    <!-- include "module/_common/底部.html" -->
+    <!-- /页脚 -->
+
+    <!-- 脚本 -->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap/bootstrap.min.js"></script>
+    <script src="js/twui.js"></script>
+    <!-- /脚本 -->
+</body>
+</html>
