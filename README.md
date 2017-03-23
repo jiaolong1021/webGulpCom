@@ -1,6 +1,6 @@
 # webGulpCom文档说明
 ---
-gulp的引入目的在于提高前端代码的编写效率（注：本环境基于[nodejs](https://nodejs.org/en/)，所以请先安装好nodejs在运行本工程）。
+gulp的引入目的在于提高前端代码的编写效率（注：本环境基于[nodejs](https://nodejs.org/en/)，所以请先安装好nodejs再运行本工程）。
 ## 使用说明
     第一步： 如果没有安装过插件执行运行webGulpCom下的install.cmd进行安装，如果安装过，忽略第一步。
     第二步： 运行preject/demo中的run.cmd即可跑工程。

@@ -7,6 +7,7 @@
  *       4. browser-sync              ---        搭建web服务器
  *
  * */
+require('./gulp/check-versions')();
 
 var gulp = require('gulp'),        // 基础库
     minimist = require('minimist'),
