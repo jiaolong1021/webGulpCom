@@ -34,9 +34,9 @@ const util = require("./util"),
  *  --- js文件经过babel等方式处理，其他类型文件则直接拷贝
  * @param event
  * @param config
- * @param reload
- */
-function script(event, config, reload) {
+ * @param connect
+ * */
+function script(event, config, connect) {
     let scriptConfig = config.scriptConfig;
     if(event.type === undefined){
         gulp.src(scriptConfig.others)
@@ -56,7 +56,7 @@ function script(event, config, reload) {
 	        //.pipe(beautifier())
             .pipe(gulp.dest(scriptConfig.dist)) // 输入到目的文件夹
             .pipe(gulpIf(config.debug, msgHandle()))
-            .pipe(reload({stream: true}));
+            .pipe(connect.reload());
     } else if(event.type === "added" || event.type === "changed" || event.type === "renamed"){
         gulp.src(scriptConfig.others)
             .pipe(plumberHandle())    // 防止管道中断
@@ -77,7 +77,7 @@ function script(event, config, reload) {
 	        //.pipe(beautifier())
             .pipe(gulp.dest(scriptConfig.dist)) // 输入到目的文件夹
             .pipe(gulpIf(config.debug, msgHandle()))
-            .pipe(reload({stream: true}));
+            .pipe(connect.reload());
 
     }else if(event.type === "deleted"){
         let delPath = event.path.replace(/\\/g, "/").replace(config.src, config.dist);  // 对删除路径处理
@@ -85,7 +85,7 @@ function script(event, config, reload) {
 	        .pipe(plumberHandle())
             .pipe(vinylPaths(del))
             .pipe(gulpIf(config.debug, msgHandle()))
-            .pipe(reload({stream: true}));
+            .pipe(connect.reload());
     }
 }
 

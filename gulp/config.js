@@ -17,29 +17,14 @@ module.exports = function (options) {
     dist = basePath + dist;
 
     // 浏览器服务设置  ----------------------------------------------------------
-    let browserConfig = {
-        development: {
-            notify: false,
-            open: "external",
-            port: 8012,
-            startPath: "index.html",
-            // 在chrome、firefix下打开该站点
-            // browser: ["google chrome", "firefox", "iexplore"],
-            server: {
-                baseDir: dist
-            }
-        },
-        product: {
-            notify: true,
-            open: "external",
-            port: 9012,
-            startPath: "index.html",
-            browser: ["google chrome", "firefox", "iexplore"],
-            server: {
-                baseDir: [src, dist]
-            }
-        }
+    let connect = {
+	    root: [dist],
+	    port: 8012
     };
+
+	if(options.env === "publish"){
+		connect.port = 8013;
+	}
 
     // CSS 参数  -------------------------------------------------------
     let cssConfig = {
@@ -50,7 +35,7 @@ module.exports = function (options) {
 	// SCSS 参数 --------------------------------------------------------
 	let scssConfig = {
 		scssSrc: src + "/css",
-		scssMain: src + "/css/main.scss", //需要编译的scss
+		scssMain: src + "/css/main*.scss", //需要编译的scss
 		cssDist: src + "/css",    // main css路径
 		sassOptions: { //编译scss过程需要的配置，可以为空
 			outputStyle: 'nested'
@@ -96,7 +81,7 @@ module.exports = function (options) {
 
     // images 参数 --------------------------------------------------------
     let imagesConfig = {
-	    src: src + '/images/**/**',
+	    src: [src + '/images/**/**', src + '/images/**/*.*'],
         dist: dist + "/images"
     };
 
@@ -123,14 +108,23 @@ module.exports = function (options) {
 		            cName = prefix + beginName.replace(/-active$/gi, '.active');
 	            }
 	            if (beginName.indexOf('-btn') !== -1) {
-		            cName = '.hover-item:hover ' + prefix + beginName.replace(/-btn$/gi, '');
+		            cName = '.ico-btn:hover ' + prefix + beginName.replace(/-btn$/gi, '');
 	            }
 	            if (beginName.indexOf('-bactive') !== -1) {
-		            cName = '.hover-item.active ' + prefix + beginName.replace(/-bactive$/gi, '');
+		            cName = '.ico-btn.active ' + prefix + beginName.replace(/-bactive$/gi, '');
 	            }
 	            if (beginName.indexOf('-bacthover') !== -1) {
-		            cName = '.hover-item.active:hover ' + prefix + beginName.replace(/-bacthover$/gi, '');
+		            cName = '.ico-btn.active:hover ' + prefix + beginName.replace(/-bacthover$/gi, '');
 	            }
+				if (beginName.indexOf('choiced-') !== -1) {
+                    cName = beginName.replace(/choiced-/gi, choiced);
+                }
+                if (beginName.indexOf('-collapsed') !== -1) {
+					 cName = '.collapsed ' + prefix + beginName.replace(/-collapsed/gi, '');
+                }
+				if (beginName.indexOf('-collapsedb') !== -1) {
+					 cName = '.ico-btn.collapsed:hover ' + prefix + beginName.replace(/-collapsedb/gi, '');
+                }
 	            if(cName !== ""){
 		            sprite.name = cName;
 	            }else{
@@ -147,7 +141,7 @@ module.exports = function (options) {
         spriteScss: src + '/css',
 
         spriteOptions: {
-            imgName: 'phoneSprite.png', //保存合并后图片的地址
+            imgName: 'images/phoneSprite.png', //保存合并后图片的地址
             //cssName: 'sprite.css', //保存合并后对于css样式的地址
             cssName: 'phoneSprite.css', //保存合并后对于css样式的地址
             padding: 10, //合并时两个图片的间距
@@ -164,14 +158,23 @@ module.exports = function (options) {
 		            cName = prefix + beginName.replace(/-active$/gi, '.active');
 	            }
 	            if (beginName.indexOf('-btn') !== -1) {
-		            cName = '.hover-item:hover ' + prefix + beginName.replace(/-btn$/gi, '');
+		            cName = '.ico-btn:hover ' + prefix + beginName.replace(/-btn$/gi, '');
 	            }
 	            if (beginName.indexOf('-bactive') !== -1) {
-		            cName = '.hover-item.active ' + prefix + beginName.replace(/-bactive$/gi, '');
+		            cName = '.ico-btn.active ' + prefix + beginName.replace(/-bactive$/gi, '');
 	            }
 	            if (beginName.indexOf('-bacthover') !== -1) {
-		            cName = '.hover-item.active:hover ' + prefix + beginName.replace(/-bacthover$/gi, '');
+		            cName = '.ico-btn.active:hover ' + prefix + beginName.replace(/-bacthover$/gi, '');
 	            }
+				if (beginName.indexOf('choiced-') !== -1) {
+                    cName = beginName.replace(/choiced-/gi, choiced);
+                }
+                  if (beginName.indexOf('-collapsed') !== -1) {
+					 cName = '.collapsed ' + prefix + beginName.replace(/-collapsed/gi, '');
+                }
+				if (beginName.indexOf('-collapsedb') !== -1) {
+					 cName = '.ico-btn.collapsed:hover ' + prefix + beginName.replace(/-collapsedb/gi, '');
+                }
 
 	            if(cName !== ""){
 		            sprite.name = cName;
@@ -311,9 +314,9 @@ module.exports = function (options) {
     return {
         src: src,
         dist: dist,
-        browserSync: browserConfig,
+	    connect: connect,
         cssConfig: cssConfig,
-	    scssConfig: scssConfig,
+        scssConfig: scssConfig,
         scriptConfig: scriptConfig,
 	    spriteConfig: spriteConfig,
         iChoiceConfig: iChoiceConfig,

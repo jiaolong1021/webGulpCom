@@ -26,7 +26,7 @@ const util = require("./util"),
 /**
  *   html编译
  */
-function html(event, config, reload) {
+function html(event, config, connect) {
     let htmlConfig = config.htmlConfig;
 
     if(event.type === undefined){
@@ -40,7 +40,7 @@ function html(event, config, reload) {
             .pipe(beautifier()) // 美化代码
             .pipe(gulp.dest(htmlConfig.dist))   // 输出到目的文件夹
             .pipe(gulpIf(config.debug, msgHandle()))
-            .pipe(reload({ stream: true}));
+            .pipe(connect.reload());
     }else if(event.type === "added" || event.type === "changed" || event.type === "renamed"){
         // html新增、有改变
         return gulp.src(htmlConfig.src)
@@ -53,7 +53,7 @@ function html(event, config, reload) {
             .pipe(beautifier()) // 美化代码
             .pipe(gulp.dest(htmlConfig.dist))   // 输出到目的文件夹
 	        .pipe(gulpIf(config.debug, msgHandle()))
-            .pipe(reload({ stream: true}));
+            .pipe(connect.reload());
     }else if(event.type === "deleted"){
         // 删除html
         let delPath = event.path.replace(/\\/g, "/").replace(config.src, config.dist);  // 对删除路径处理
@@ -61,7 +61,7 @@ function html(event, config, reload) {
 	        .pipe(plumberHandle())
             .pipe(vinylPaths(del))
             .pipe(gulpIf(config.debug, msgHandle()))
-            .pipe(reload({stream: true}));
+            .pipe(connect.reload());
     }
 }
 
@@ -69,7 +69,7 @@ function html(event, config, reload) {
  *
  *  HTML内容替换
  * */
-function htmlInclude(event, config, reload) {
+function htmlInclude(event, config, connect) {
     let htmlConfig = config.htmlConfig;
 
     // 执行拷贝

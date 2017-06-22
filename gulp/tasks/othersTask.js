@@ -23,14 +23,14 @@ const util = require("./util"),
 /**
  * 拷贝其他文件
  * */
-function others(event, config, reload) {
+function others(event, config, connect) {
     // 复制css文件，包括层级
     if(event.type === undefined){
         return gulp.src(config.others.src)
             .pipe(plumberHandle())
             .pipe(gulp.dest(config.others.dist))
 	        .pipe(gulpIf(config.debug, msgHandle()))
-            .pipe(reload({stream: true}));
+            .pipe(connect.reload());
     } else if(event.type === "added" || event.type === "changed" || event.type === "renamed"){
         return gulp.src(config.others.src)
             .pipe(plumberHandle())
@@ -38,7 +38,7 @@ function others(event, config, reload) {
             .pipe(changed(config.others.dist))
             .pipe(gulp.dest(config.others.dist))
             .pipe(gulpIf(config.debug, msgHandle()))
-            .pipe(reload({stream: true}));
+            .pipe(connect.reload());
     }else if(event.type === "deleted"){
 	    console.log(event.path);
         let delPath = event.path.replace(/\\/g, "/").replace(config.src, config.dist);  // 对删除路径处理
@@ -46,7 +46,7 @@ function others(event, config, reload) {
 	        .pipe(plumberHandle())
             .pipe(vinylPaths(del))
             .pipe(gulpIf(config.debug, msgHandle()))
-            .pipe(reload({stream: true}));
+            .pipe(connect.reload());
     }
 }
 

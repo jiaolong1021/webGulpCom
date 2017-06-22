@@ -26,9 +26,9 @@ const util = require("./util"),
 /**
  * 生成雪碧图
  * @param config
- * @param reload
+ * @param connect
  */
-function sprite(config, reload) {
+function sprite(config, connect) {
     let spriteConfig = config.spriteConfig;
     let spriteData = gulp.src(spriteConfig.spriteSrc + "/**/*.*")
         .pipe(plumberHandle())
@@ -45,15 +45,15 @@ function sprite(config, reload) {
         .pipe(plumberHandle())
         .pipe(gulp.dest(spriteConfig.spriteDist))
         .pipe(gulpIf(config.debug, msgHandle()))
-        .pipe(reload({stream: true}));
+        .pipe(connect.reload());
 }
 
 /**
  * 手机端开启后生成雪碧图
  * @param config
- * @param reload
+ * @param connect
  */
-function phoneSprite(config, reload) {
+function phoneSprite(config, connect) {
     let phoneSprite = config.phoneSprite;
     let phoneSpriteData = gulp.src(phoneSprite.spriteSrc + "/**/*.*")
         .pipe(plumberHandle())
@@ -70,7 +70,7 @@ function phoneSprite(config, reload) {
         .pipe(plumberHandle())
         .pipe(gulp.dest(phoneSprite.spriteDist))
         .pipe(gulpIf(config.debug, msgHandle()))
-        .pipe(reload({stream: true}));
+        .pipe(connect.reload());
 }
 
 /**

@@ -7,14 +7,18 @@
  *       4. browser-sync              ---        搭建web服务器
  *
  * */
+
+// node、npm版本检测
 require('./gulp/check-versions')();
 
 var gulp = require('gulp'),        // 基础库
-    minimist = require('minimist'),
-    del = require('del'),
-    browserSync = require('browser-sync').create(),
-    runSequence = require("run-sequence"),
-    reload = browserSync.reload;
+	minimist = require('minimist'),
+	del = require('del'),
+	runSequence = require("run-sequence"),
+	connect = require("gulp-connect"),
+	nodemon = require("gulp-nodemon"),
+	proxy = require("http-proxy-middleware"),
+	opn = require("opn");
 
 var knownOptions = {
     string: 'env',
@@ -39,81 +43,76 @@ var htmlTask = require(taskBasePath + 'htmlTask'),
     pugTask = require(taskBasePath + 'pugTask');
 
 gulp.task('html', function () {
-    return htmlTask.html({}, config, reload);
+    return htmlTask.html({}, config, connect);
 });
 gulp.task('script', function () {
-    return scriptsTask.script({}, config, reload);
+    return scriptsTask.script({}, config, connect);
 });
 gulp.task('sprite', function () {
-    return spriteTask.sprite(config, reload);
+    return spriteTask.sprite(config, connect);
 });
 gulp.task('images', function () {
-    return imagesTask.images({}, config, reload);
+    return imagesTask.images({}, config, connect);
 });
 gulp.task('scss', function () {
-    return scssTask.scss({}, config, reload);
+    return scssTask.scss({}, config, connect);
 });
 gulp.task('css', function () {
-    return cssTask.css({}, config, reload);
+    return cssTask.css({}, config, connect);
 });
 gulp.task('htmlInclude', function () {
-    return htmlTask.htmlInclude({}, config, reload);
+    return htmlTask.htmlInclude({}, config, connect);
 });
 gulp.task('htmlIncludeWatch', ['htmlInclude'], function (done) {
-	reload();
+	connect.reload();
 	done();
 });
 /* 手机端雪碧任务 */
 gulp.task('phoneSprite', function () {
-    return spriteTask.phoneSprite(config, reload);
+    return spriteTask.phoneSprite(config, connect);
 });
 gulp.task('pug', function () {
-    return pugTask.pugBuild({}, config, reload);
+    return pugTask.pugBuild({}, config, connect);
 });
 gulp.task('others', function () {
-	return othersTask.others({}, config, reload);
+	return othersTask.others({}, config, connect);
 });
 
-// 启动web开发环境的服务
-gulp.task('serve', function() {
-	runSequence(['clean'], ['sprite'], ['scss', 'pug', 'others'], ['images', 'script', 'html', 'css'], function () {
-		browserSync.init(config.browserSync.development);
-
-		gulp.watch(config.spriteConfig.spriteSrc + "/**/*.*", ['sprite']); // 监控雪碧图任务
-		gulp.watch(config.scssConfig.scssSrc + "/**/*.scss", ['scss']); // 监控scss样式源文件
-		gulp.watch(config.cssConfig.src, function (event) {cssTask.css(event, config, reload); });  // 监控css样式源文件
-		gulp.watch(config.imagesConfig.src, function (event) { imagesTask.images(event, config, reload); }); // 监控所有图片
-		gulp.watch(config.src + "/js/**/**", function (event) {scriptsTask.script(event, config, reload); }); // 监控js源文件
-		gulp.watch(config.htmlConfig.src, function (event) {htmlTask.html(event, config, reload);});   // 监控html源文件
-		gulp.watch([config.pugConfig.src], function (event) {pugTask.pugBuild(event, config, reload);});   // 监控pug源文件
-		gulp.watch(config.htmlConfig.ignore, ['htmlIncludeWatch']); // include模块内容监控
-		gulp.watch([config.dist + "/css/main/images/**/**"]).on('change', reload);// 监控目标文件夹下雪碧变化
-		/*gulp.watch(config.dist + "/!**!/!*.html").on('change', reload);*/
-		gulp.watch(config.others.src, function (event) {othersTask.others(event, config, reload);});
-		gulp.run('sprite'); //解决雪碧图第一次生成错误问题
-	});
-});
-
-/* 编辑同时适应手机、web端的响应式页面服务器 */
+/* 手机、web端的响应式页面服务器 */
 gulp.task('phoneServe', function() {
     runSequence(['clean'], ['sprite', 'phoneSprite'], ['others', 'pug'], ['scss', 'images'], ['script', 'html', 'css'], function () {
-	    browserSync.init(config.browserSync.development);
+    	/* 服务器 */
+	    connect.server({
+		    root: [config.dist],
+		    port: config.connect.port,
+		    livereload: true,
+		    middleware: function(connect, opt) {    /* 通过 http-proxy-middleware 设置代理 */
+			    return [
+				    /*proxy('/schoolNotice',  {
+					    target: 'http://localhost:8080',
+					    changeOrigin:true
+				    })*/
+			    ]
+		    }
+	    });
 
 	    gulp.watch(config.spriteConfig.spriteSrc + "/**/*.*", ['sprite']); // 监控雪碧图任务
 	    gulp.watch(config.phoneSprite.spriteSrc + "/**/*.*", ['phoneSprite']);  // 监控手机雪碧图任务
-	    gulp.watch(config.cssConfig.src, function (event) {cssTask.css(event, config, reload) });  // 监控css样式源文件
-	    gulp.watch(config.scssConfig.scssSrc + "/**/*.scss", function (event) {scssTask.scss(event, config, reload) }); // 监控scss样式源文件
-	    gulp.watch(config.imagesConfig.src, function (event) { imagesTask.images(event, config, reload); }); // 监控所有图片
-	    gulp.watch(config.src + "/js/**/**", function (event) {scriptsTask.script(event, config, reload); }); // 监控js源文件
-	    gulp.watch(config.htmlConfig.src, function (event) {htmlTask.html(event, config, reload);});   // 监控html源文件
+	    gulp.watch(config.cssConfig.src, function (event) {cssTask.css(event, config, connect) });  // 监控css样式源文件
+	    gulp.watch(config.scssConfig.scssSrc + "/**/*.scss", function (event) {scssTask.scss(event, config, connect) }); // 监控scss样式源文件
+	    gulp.watch(config.imagesConfig.src, function (event) { imagesTask.images(event, config, connect); }); // 监控所有图片
+	    gulp.watch(config.src + "/js/**/**", function (event) {scriptsTask.script(event, config, connect); }); // 监控js源文件
+	    gulp.watch(config.htmlConfig.src, function (event) {htmlTask.html(event, config, connect);});   // 监控html源文件
 	    gulp.watch(config.htmlConfig.ignore, ['htmlIncludeWatch']); // include模块内容监控
-	    gulp.watch(config.pugConfig.src, function (event) {pugTask.pugBuild(event, config, reload);});   // 监控pug源文件
-	    gulp.watch([config.pugConfig.ignore + "/**/**"], function (event) {pugTask.pugBuild({}, config, reload);});   // 监控pug模板文件
-	    gulp.watch(config.dist + "/css/main/images/**/**").on('change', reload);// 监控目标文件夹下雪碧变化
-	    /*gulp.watch(config.dist + "/!**!/!*.html").on('change', reload);*/
-	    gulp.watch(config.others.src, function (event) {othersTask.others(event, config, reload);});
+	    gulp.watch(config.pugConfig.src, function (event) {pugTask.pugBuild(event, config, connect);});   // 监控pug源文件
+	    gulp.watch([config.pugConfig.ignore + "/**/**"], function (event) {pugTask.pugBuild({}, config, connect);});   // 监控pug模板文件
+	    gulp.watch(config.dist + "/css/main/images/**/**").on('change', function () {connect.reload()});// 监控目标文件夹下雪碧变化
+	    gulp.watch(config.others.src, function (event) {othersTask.others(event, config, connect);});
 	    gulp.run('sprite');//解决雪碧图第一次生成错误问题
 	    gulp.run('phoneSprite');//解决雪碧图第一次生成错误问题
+
+	    /* 浏览器自动打开开始页面 */
+	    opn("http://localhost:" + config.connect.port + "/index.html");
     });
 });
 
@@ -122,7 +121,7 @@ gulp.task('clean', del.bind(null, config.cleanConfig.src, {
     force: true
 }));
 
-/* iChoice雪碧图 */
+/* iChoice雪碧图任务 */
 gulp.task('iChoice', function () {
     spriteTask.iChoice(config);
 });

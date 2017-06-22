@@ -11,6 +11,7 @@
 const gulp = require('gulp'),
     changed = require('gulp-changed'),
     del = require("del"),
+    cssnano = require('gulp-cssnano'),
     gulpIf = require("gulp-if"),
     vinylPaths = require('vinyl-paths');
 
@@ -23,29 +24,31 @@ const util = require("./util"),
 /**
  * css下的css文件处理
  * */
-function css(event, config, reload) {
+function css(event, config, connect) {
 	let cssConfig = config.cssConfig;
     // 复制css文件，包括层级
     if(event.type === undefined){
         return gulp.src(cssConfig.src)
             .pipe(plumberHandle())
+            /*.pipe(cssnano())*/
             .pipe(gulp.dest(cssConfig.dist))
 	        .pipe(gulpIf(config.debug, msgHandle()))
-            .pipe(reload({stream: true}));
+            .pipe(connect.reload());
     } else if(event.type === "added" || event.type === "changed" || event.type === "renamed"){
         return gulp.src(cssConfig.src)
             .pipe(plumberHandle())
             .pipe(changed(cssConfig.dist))
+            /*.pipe(cssnano())*/
             .pipe(gulp.dest(cssConfig.dist))
             .pipe(gulpIf(config.debug, msgHandle()))
-            .pipe(reload({stream: true}));
+            .pipe(connect.reload());
     }else if(event.type === "deleted"){
         let delPath = event.path.replace(/\\/g, "/").replace(config.src, config.dist);  // 对删除路径处理
         return gulp.src(delPath)
             .pipe(vinylPaths(del))
 	        .pipe(plumberHandle())
             .pipe(gulpIf(config.debug, msgHandle()))
-            .pipe(reload({stream: true}));
+            .pipe(connect.reload());
     }
 }
 

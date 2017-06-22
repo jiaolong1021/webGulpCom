@@ -21,12 +21,12 @@ var util = require("./util"),
     msgHandle = util.msgTipHandle;
 
 /**
- * scss处理(所有scss汇入main.scss，然后编译成main.css)
+ * scss处理(所有scss汇入main*.scss，然后编译成main*.css)
  * @param event
  * @param config
- * @param reload
+ * @param connect
  */
-function scss(event, config, reload) {
+function scss(event, config, connect) {
     var scssConfig = config.scssConfig;
 
     return gulp.src(scssConfig.scssMain)   // sass文件编译成css
@@ -35,7 +35,7 @@ function scss(event, config, reload) {
         .pipe(postcss([autoprefixer(scssConfig.prefixOptions)]))
 	    .pipe(gulpIf(config.debug, msgHandle()))
         .pipe(gulp.dest(scssConfig.cssDist))
-        .pipe(reload({stream: true}));
+        .pipe(connect.reload());
 }
 
 module.exports = {

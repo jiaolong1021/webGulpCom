@@ -26,7 +26,7 @@ const localUtil = require("./util"),
 /*
 *   pug编译
 * */
-function pugBuild(event, config, reload) {
+function pugBuild(event, config, connect) {
 	let pugConfig = config.pugConfig;
 
     if(pugConfig.pugUse){
@@ -38,7 +38,7 @@ function pugBuild(event, config, reload) {
                 .pipe(beautifier())
                 .pipe(gulp.dest(pugConfig.dist))
                 .pipe(gulpIf(config.debug, msgHandle()))
-                .pipe(reload({ stream: true}));
+                .pipe(connect.reload());
         }else if(event.type === "added" || event.type === "changed" || event.type === "renamed"){
             // pug新增、有改变
             return gulp.src(pugConfig.src)
@@ -48,7 +48,7 @@ function pugBuild(event, config, reload) {
                 .pipe(beautifier())
                 .pipe(gulp.dest(pugConfig.dist))
                 .pipe(gulpIf(config.debug, msgHandle()))
-                .pipe(reload({ stream: true}));
+                .pipe(connect.reload());
         }else if(event.type === "deleted"){
             // 删除pug对应的html文件
             var delPath = event.path.replace(/\\/g, "/").replace(config.src, config.dist).replace(".pug", ".html");  // 对删除路径处理
@@ -56,7 +56,7 @@ function pugBuild(event, config, reload) {
 	            .pipe(plumberHandle())
                 .pipe(vinylPaths(del))
                 .pipe(gulpIf(config.debug, msgHandle()))
-                .pipe(reload({stream: true}));
+                .pipe(connect.reload());
         }
     }
 }

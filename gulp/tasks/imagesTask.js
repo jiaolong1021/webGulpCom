@@ -23,22 +23,23 @@ const util = require("./util"),
  * images下的图片处理
  * @param event
  * @param config
- * @param reload
+ * @param connect
  */
-function images(event, config, reload) {
+function images(event, config, connect) {
     let imagesConfig = config.imagesConfig;
     if(event.type === undefined) {
         return gulp.src(imagesConfig.src)
             .pipe(plumberHandle())
 	        .pipe(gulpIf(config.debug, msgHandle()))
             .pipe(gulp.dest(imagesConfig.dist))
-	        .pipe(reload({stream: true}));
+	        .pipe(connect.reload());
     }else if(event.type === "added" || event.type === "changed" || event.type === "renamed"){
         return gulp.src(imagesConfig.src)
             .pipe(plumberHandle())
+	        .pipe(changed(imagesConfig.dist))
 	        .pipe(gulpIf(config.debug, msgHandle()))
             .pipe(gulp.dest(imagesConfig.dist))
-	        .pipe(reload({stream: true}));
+	        .pipe(connect.reload());
     } else if(event.type === "deleted"){
 	    let delPath = event.path.replace(/\\/g, "/").replace(config.src, config.dist);  // 对删除路径处理
         return gulp.src(delPath)
