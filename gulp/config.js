@@ -90,6 +90,7 @@ module.exports = function (options) {
 	    spriteSrc: src + '/icons',
 	    spriteDist: dist,
         spriteScss: src + '/css',
+	    px2Rem: false,
 	    spriteOptions: {
             imgName: 'images/sprite.png', //保存合并后图片的地址
             //cssName: 'sprite.css', //保存合并后对于css样式的地址

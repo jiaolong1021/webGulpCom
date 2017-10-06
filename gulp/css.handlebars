@@ -1,6 +1,7 @@
 [class*='ico-'] {
 	display: inline-block;
 	vertical-align: middle;
+	background-repeat: no-repeat;
 }
 
 {{#sprites}}
@@ -9,5 +10,6 @@
     height: {{px.height}};
     background-position: {{px.offset_x}} {{px.offset_y}};
     background-image: url('../images/sprite.png');
+    background-size: {{px.total_width}} {{px.total_height}};
 }
 {{/sprites}}

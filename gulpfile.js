@@ -64,7 +64,8 @@ gulp.task('htmlInclude', function () {
     return htmlTask.htmlInclude({}, config, connect);
 });
 gulp.task('htmlIncludeWatch', ['htmlInclude'], function (done) {
-	connect.reload();
+	gulp.src(config.dist + "/**/*.html")
+		.pipe(connect.reload());
 	done();
 });
 /* 手机端雪碧任务 */

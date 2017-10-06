@@ -16,6 +16,7 @@ const gulp = require('gulp'),
     rename = require("gulp-rename"),
     concat = require("gulp-concat"),
     fs = require("fs"),
+    px2rem = require('gulp-px2rem'),
     gulpIf = require("gulp-if");
 
 // 工具模块
@@ -38,6 +39,7 @@ function sprite(config, connect) {
 
     cssStream
         .pipe(plumberHandle())
+        .pipe(gulpIf(config.spriteConfig.px2Rem, px2rem({rootValue: 20, replace: true})))     // px 转 rem
         .pipe(rename("_icons.scss"))
         .pipe(gulp.dest(spriteConfig.spriteScss));
 
@@ -63,6 +65,7 @@ function phoneSprite(config, connect) {
 
     phoneCssStream
         .pipe(plumberHandle())
+	    .pipe(gulpIf(config.spriteConfig.px2Rem, px2rem({rootValue: 20, replace: true})))     // px 转 rem
         .pipe(rename("_icons-phone.scss"))
         .pipe(gulp.dest(phoneSprite.spriteScss));
 
